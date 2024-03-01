@@ -167,7 +167,6 @@ class TextAnalysis:
             return self.resumo
             
 
-    #FUNÇÕES - OUTPUT
     def most_frequent(self):
         self.frequent = Counter(self.token['token'])
 
