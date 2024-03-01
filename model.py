@@ -23,6 +23,7 @@ class TextAnalysis:
     #ENTRADA
     def __init__(self, uploaded_file):
         nltk.download('stopwords')
+        nltk.download('punkt')
         self.uploaded_file = uploaded_file
         self.text_completo, self.text, self.pages = self.read_uploaded_file()
         self.linguagem = str(detect(self.text_completo))
