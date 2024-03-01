@@ -19,25 +19,12 @@ import PyPDF2
 from io import BytesIO
 
 def app():
-
-    # ENTRADA
     input, processar_button = sidebar()
-
     if processar_button:
-
-        # INSTANCIANDO A CLASSE
         Text_Analysis = TextAnalysis(input)
-
-
-        #PROCESSAMENTO
         Text_Analysis.clear_txt()
-        
-        #ANÁLISES
         lmc = Text_Analysis.sentiment_analysis_LMC()
         insider = Text_Analysis.sentiment_analysis_Insider()
         frequent = Text_Analysis.most_frequent()
-        summary = Text_Analysis.summary()
-        
-
-        # SAÍDA
+        summary = Text_Analysis.summary()        
         conteudo(lmc=lmc, harvard=insider, frequent = frequent, summary=summary)
