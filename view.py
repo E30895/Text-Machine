@@ -3,7 +3,6 @@ import numpy as np
 import re
 import string
 import matplotlib.pyplot as plt
-import fitz
 import nltk
 import openpyxl
 from textblob import TextBlob
@@ -16,7 +15,8 @@ import streamlit as st
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
-
+import PyPDF2
+from io import BytesIO
 
 def sidebar():
     st.set_page_config(page_title="Text Machine", layout='wide')
@@ -85,8 +85,3 @@ def conteudo(lmc, harvard, frequent, summary):
         container.write('Resumo')
         for item in summary:
             container.write(str(item))
-        #container.write(str(summary[0]))
-        #container.write(str(summary[1]))
-        #container.write(str(summary[2]))
-        #container.write(str(summary[3]))
-        #container.write(str(summary[4]))
