@@ -108,28 +108,34 @@ class TextAnalysis:
         return self.text
 
     def sentiment_analysis_LMC(self):
+        try:
+            self.Loughan_Mc = pd.read_excel('.Loughran_McDonald.xlsx')
+            self.Loughan_Mc = self.Loughan_Mc.loc[(self.Loughan_Mc['sentiment'] == 'positive') | (self.Loughan_Mc['sentiment'] == 'negative')]
+
+            self.sentiment_analysis = None
+            self.sentiment_analysis = pd.merge(self.token, self.Loughan_Mc, on='token')
+            self.sentiment_analysis = self.sentiment_analysis.groupby('sentiment').size()
+            self.sentiment_analysis['sentiment'] = ((self.sentiment_analysis['positive'] - self.sentiment_analysis['negative']) / (self.sentiment_analysis['positive'] + self.sentiment_analysis['negative']))
+
+            return round(self.sentiment_analysis['sentiment'],4)
         
-        self.Loughan_Mc = pd.read_excel('.Loughran_McDonald.xlsx')
-        self.Loughan_Mc = self.Loughan_Mc.loc[(self.Loughan_Mc['sentiment'] == 'positive') | (self.Loughan_Mc['sentiment'] == 'negative')]
-
-        self.sentiment_analysis = None
-        self.sentiment_analysis = pd.merge(self.token, self.Loughan_Mc, on='token')
-        self.sentiment_analysis = self.sentiment_analysis.groupby('sentiment').size()
-        self.sentiment_analysis['sentiment'] = ((self.sentiment_analysis['positive'] - self.sentiment_analysis['negative']) / (self.sentiment_analysis['positive'] + self.sentiment_analysis['negative']))
-
-        return round(self.sentiment_analysis['sentiment'],4)
-
+        except: 
+            return "Elementos insuficientes"
 
     def sentiment_analysis_Insider(self):
-        self.insider = pd.read_csv('.General_Insider.csv', sep=';')
-        self.insider = self.insider.loc[(self.insider['sentiment'] == 'positive') | (self.insider['sentiment'] == 'negative')]
+        try:
+            self.insider = pd.read_csv('.General_Insider.csv', sep=';')
+            self.insider = self.insider.loc[(self.insider['sentiment'] == 'positive') | (self.insider['sentiment'] == 'negative')]
 
-        self.sentiment_analysis = None
-        self.sentiment_analysis = pd.merge(self.token, self.insider, on='token')
-        self.sentiment_analysis = self.sentiment_analysis.groupby('sentiment').size()
-        self.sentiment_analysis['sentiment'] = ((self.sentiment_analysis['positive'] - self.sentiment_analysis['negative']) / (self.sentiment_analysis['positive'] + self.sentiment_analysis['negative']))
+            self.sentiment_analysis = None
+            self.sentiment_analysis = pd.merge(self.token, self.insider, on='token')
+            self.sentiment_analysis = self.sentiment_analysis.groupby('sentiment').size()
+            self.sentiment_analysis['sentiment'] = ((self.sentiment_analysis['positive'] - self.sentiment_analysis['negative']) / (self.sentiment_analysis['positive'] + self.sentiment_analysis['negative']))
 
-        return round(self.sentiment_analysis['sentiment'], 4)
+            return round(self.sentiment_analysis['sentiment'], 4)
+        
+        except:
+            return "Elementos insuficientes"
 
 
     def summary(self):
