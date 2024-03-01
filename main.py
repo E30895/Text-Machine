@@ -20,6 +20,7 @@ from view import sidebar, conteudo
 from model import TextAnalysis
 from controller import app
 import PyMuPDF
+from fitz import frontend
 
 def main():
     print("Iniciando")
