@@ -3,7 +3,6 @@ import numpy as np
 import re
 import string
 import matplotlib.pyplot as plt
-import fitz
 import nltk
 import openpyxl
 import streamlit as st
@@ -15,14 +14,8 @@ from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
 from langdetect import detect
-
-
-
-#FUTURES:
-#   DISPARAR O APLICATIVO APENAS QUANDO CLICAR NO BOTÃO DE PROCESSAR OK
-#   TRAZER A TABELA DE TERMOS FREQUENTES NO MESMO IDIOMA DO TEXTO    OK
-#   TRAZER O RESUMO PARA O MESMO IDIOMA DO TEXTO                     OK
-#   USAR A FUNÇÃO DO R PARA FAZER A ANÁLISE DE VARIOS SENTIMENTOS E POR NOS CARDS
+import PyPDF2
+from io import BytesIO
 
 class TextAnalysis:
 
@@ -32,24 +25,27 @@ class TextAnalysis:
         self.text_completo, self.text, self.pages = self.read_uploaded_file()
         self.linguagem = str(detect(self.text_completo))
 
+
     def read_uploaded_file(self):
         texto = ""
         pages = 0
 
-        # Verifica se um arquivo foi carregado
         if self.uploaded_file is not None:
-            # Lê o conteúdo do arquivo PDF
-            with fitz.open(stream=self.uploaded_file.getvalue(), filetype="pdf") as doc:
-                pages = doc.page_count
-                for pagina_num in range(doc.page_count):
-                    pagina = doc[pagina_num]
-                    bloco_texto = pagina.get_text("text")
-                    texto += bloco_texto
+            # Convertendo o conteúdo do arquivo em um objeto BytesIO
+            file_stream = BytesIO(self.uploaded_file.getvalue())
+
+            # Criando um objeto PdfReader para ler o arquivo PDF
+            pdf_reader = PyPDF2.PdfReader(file_stream)
+
+            pages = len(pdf_reader.pages)
+
+            # Iterando sobre todas as páginas do PDF
+            for pagina_num in range(pages):
+                pagina = pdf_reader.pages[pagina_num]
+                texto += pagina.extract_text()
 
         return texto, texto, pages
     
-
-    #TRATAMENTO
     def translate_text(self):
         if self.linguagem != 'en':
             corpus = pd.DataFrame()
@@ -114,17 +110,6 @@ class TextAnalysis:
         self.tokenize()
         return self.text
 
-    #def clear_txt(self):
-    #    self.remove_expressoes()
-    #    self.translate_text()
-    #    self.to_lower()
-    #    self.remove_stopwords_en()
-    #    self.remove_stopwords_br()
-    #    self.remove_pontuaiton()
-    #    self.remove_numbers()
-    #    self.tokenize()
-
-
     def sentiment_analysis_LMC(self):
         
         self.Loughan_Mc = pd.read_excel('.Loughran_McDonald.xlsx')
@@ -135,7 +120,7 @@ class TextAnalysis:
         self.sentiment_analysis = self.sentiment_analysis.groupby('sentiment').size()
         self.sentiment_analysis['sentiment'] = ((self.sentiment_analysis['positive'] - self.sentiment_analysis['negative']) / (self.sentiment_analysis['positive'] + self.sentiment_analysis['negative']))
 
-        return self.sentiment_analysis['sentiment']
+        return round(self.sentiment_analysis['sentiment'],4)
 
 
     def sentiment_analysis_Insider(self):
@@ -147,7 +132,7 @@ class TextAnalysis:
         self.sentiment_analysis = self.sentiment_analysis.groupby('sentiment').size()
         self.sentiment_analysis['sentiment'] = ((self.sentiment_analysis['positive'] - self.sentiment_analysis['negative']) / (self.sentiment_analysis['positive'] + self.sentiment_analysis['negative']))
 
-        return self.sentiment_analysis['sentiment']
+        return round(self.sentiment_analysis['sentiment'], 4)
 
 
     def summary(self):
@@ -163,7 +148,7 @@ class TextAnalysis:
             self.resumo = self.resumo['tradução'][0]
             parser = PlaintextParser.from_string(self.resumo, Tokenizer("portuguese"))
             summarizer = LsaSummarizer()
-            self.resumo = summarizer(parser.document, 5)  #5 é o número de sentenças no resumo
+            self.resumo = summarizer(parser.document, self.pages)  
             
             return self.resumo
         
@@ -175,8 +160,7 @@ class TextAnalysis:
             self.resumo = [self.text_temp]
             parser = PlaintextParser.from_string(self.resumo, Tokenizer("portuguese"))
             summarizer = LsaSummarizer()
-            self.resumo = summarizer(parser.document, self.pages)  #5 é o número de sentenças no resumo
-            
+            self.resumo = summarizer(parser.document, self.pages)
             return self.resumo
             
 
