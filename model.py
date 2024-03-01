@@ -19,8 +19,6 @@ from io import BytesIO
 
 @st.cache_resource
 class TextAnalysis:
-
-    #ENTRADA
     def __init__(self, uploaded_file):
         nltk.download('stopwords')
         nltk.download('punkt')
@@ -34,15 +32,11 @@ class TextAnalysis:
         pages = 0
 
         if self.uploaded_file is not None:
-            # Convertendo o conteúdo do arquivo em um objeto BytesIO
             file_stream = BytesIO(self.uploaded_file.getvalue())
-
-            # Criando um objeto PdfReader para ler o arquivo PDF
             pdf_reader = PyPDF2.PdfReader(file_stream)
 
             pages = len(pdf_reader.pages)
 
-            # Iterando sobre todas as páginas do PDF
             for pagina_num in range(pages):
                 pagina = pdf_reader.pages[pagina_num]
                 texto += pagina.extract_text()
