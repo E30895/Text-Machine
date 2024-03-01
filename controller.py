@@ -3,7 +3,6 @@ import numpy as np
 import re
 import string
 import matplotlib.pyplot as plt
-import fitz
 import nltk
 import streamlit as st
 import openpyxl
@@ -16,6 +15,8 @@ from collections import Counter
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
+import PyPDF2
+from io import BytesIO
 
 def app():
 
