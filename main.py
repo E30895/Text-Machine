@@ -22,11 +22,10 @@ from controller import app
 import PyMuPDF
 from fitz import frontend
 
+
 def main():
     print("Iniciando")
     app()
-
-
 
 if __name__ == "__main__":
     main()
