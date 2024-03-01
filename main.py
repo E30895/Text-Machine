@@ -3,7 +3,6 @@ import numpy as np
 import re
 import string
 import matplotlib.pyplot as plt
-import fitz
 import nltk
 import openpyxl
 import streamlit as st
@@ -19,13 +18,14 @@ from langdetect import detect
 from view import sidebar, conteudo
 from model import TextAnalysis
 from controller import app
-import PyMuPDF
-from fitz import frontend
-
+import PyPDF2
+from io import BytesIO
 
 def main():
     print("Iniciando")
     app()
+
+
 
 if __name__ == "__main__":
     main()
