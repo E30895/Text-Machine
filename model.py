@@ -17,10 +17,12 @@ from langdetect import detect
 import PyPDF2
 from io import BytesIO
 
+@st.cache_resource
 class TextAnalysis:
 
     #ENTRADA
     def __init__(self, uploaded_file):
+        nltk.download('stopwords')
         self.uploaded_file = uploaded_file
         self.text_completo, self.text, self.pages = self.read_uploaded_file()
         self.linguagem = str(detect(self.text_completo))
