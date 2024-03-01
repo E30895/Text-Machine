@@ -19,6 +19,7 @@ from langdetect import detect
 from view import sidebar, conteudo
 from model import TextAnalysis
 from controller import app
+import PyMuPDF
 
 def main():
     print("Iniciando")
