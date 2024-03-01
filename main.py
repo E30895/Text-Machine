@@ -22,7 +22,6 @@ import PyPDF2
 from io import BytesIO
 
 def main():
-    print("Iniciando")
     app()
 
 if __name__ == "__main__":
