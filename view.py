@@ -19,8 +19,12 @@ import PyPDF2
 from io import BytesIO
 
 def sidebar():
-    st.set_page_config(page_title="Text Machine", layout='wide')
-
+    #st.set_page_config(page_title="Text Machine", layout='wide')
+    st.set_page_config(
+    page_title="Meu Aplicativo",
+    layout="wide",
+    initial_sidebar_state="expanded")
+    
     st.sidebar.title('Text Machine')
     st.sidebar.header('Sobre')
 
