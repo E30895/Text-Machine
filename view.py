@@ -19,12 +19,19 @@ import PyPDF2
 from io import BytesIO
 
 def sidebar():
-    #st.set_page_config(page_title="Text Machine", layout='wide')
-    st.set_page_config(
-    page_title="Meu Aplicativo",
-    layout="wide",
-    initial_sidebar_state="expanded")
-    
+
+    """
+    Configura a barra lateral da aplicação.
+
+    A barra lateral inclui informações sobre a aplicação, como título, descrição e opção de fazer upload do arquivo de texto.
+
+    Retorna:
+        file_uploader: Um objeto FileUploader do Streamlit para fazer upload de arquivos.
+        button: Um botão para iniciar o processamento do texto.
+    """
+        
+    st.set_page_config(page_title="Text Machine", layout='wide')
+
     st.sidebar.title('Text Machine')
     st.sidebar.header('Sobre')
 
@@ -66,6 +73,19 @@ def sidebar():
 
 
 def conteudo(lmc, harvard, frequent, summary):
+
+    """
+    Exibe o conteúdo principal da aplicação.
+
+    Este método exibe as métricas de sentimentos, os termos mais frequentes e um resumo do texto processado.
+
+    Parâmetros:
+        lmc (float): Sentimento calculado usando o léxico Loughran-McDonald.
+        harvard (float): Sentimento calculado usando o léxico Insider.
+        frequent (DataFrame): DataFrame contendo os termos mais frequentes no texto.
+        summary (str): Resumo do texto processado.
+    """
+        
     container = st.container()
     col1, col2 = st.columns(2)
 
