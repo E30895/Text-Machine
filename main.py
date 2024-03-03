@@ -22,7 +22,19 @@ import PyPDF2
 from io import BytesIO
 
 def main():
+
+    """
+    Função de inicialização da aplicação.
+
+    Esta função inicia a execução do programa, imprimindo uma mensagem de início e chamando a função `app()` para executar a aplicação.
+
+    Retorna:
+        None
+    """
+        
+    print("Iniciando")
     app()
+
 
 if __name__ == "__main__":
     main()
