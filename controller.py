@@ -19,12 +19,23 @@ import PyPDF2
 from io import BytesIO
 
 def app():
+
+    """
+    Função principal que controla o fluxo da aplicação.
+
+    Esta função configura a barra lateral, processa o arquivo de texto fornecido pelo usuário e exibe os resultados na tela.
+
+    Retorna:
+        None
+    """
+        
     input, processar_button = sidebar()
+
     if processar_button:
         Text_Analysis = TextAnalysis(input)
         Text_Analysis.clear_txt()
         lmc = Text_Analysis.sentiment_analysis_LMC()
         insider = Text_Analysis.sentiment_analysis_Insider()
         frequent = Text_Analysis.most_frequent()
-        summary = Text_Analysis.summary()        
+        summary = Text_Analysis.summary()
         conteudo(lmc=lmc, harvard=insider, frequent = frequent, summary=summary)
